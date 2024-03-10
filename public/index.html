@@ -1,84 +1,91 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>TGCAS Bot</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(to right, #0f0c29, #302b63);
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to right, #0f0c29, #302b63);
+        color: #fff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
 
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #4caf50;
+      }
+
+      button,
+      input {
+        padding: 15px 30px;
+        font-size: 18px;
+        cursor: pointer;
+        margin: 15px;
+        border: none;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        background-color: #1db954;
+        color: #fff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        width: 80%;
+        max-width: 300px;
+      }
+
+      button:hover,
+      input:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+      }
+
+      input {
+        padding: 15px;
+        font-size: 18px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        text-align: center;
+      }
+
+      #botStatus {
+        font-size: 20px;
+        margin-top: 20px;
+        font-weight: bold;
+      }
+
+      @media (max-width: 600px) {
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #4CAF50;
+          font-size: 2rem;
         }
-
         button,
         input {
-            padding: 15px 30px;
-            font-size: 18px;
-            cursor: pointer;
-            margin: 15px;
-            border: none;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            background-color: #1db954;
-            color: #fff;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            width: 80%;
-            max-width: 300px;
+          padding: 12px 20px;
+          font-size: 16px;
+          margin: 10px;
         }
-
-        button:hover,
-        input:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-        }
-
-        input {
-            padding: 15px;
-            font-size: 18px;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            text-align: center;
-        }
-
-        #botStatus {
-            font-size: 20px;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 2rem;
-            }
-            button, input {
-                padding: 12px 20px;
-                font-size: 16px;
-                margin: 10px;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>TGCAS Bot</h1>
-    <button id="spotifyButton" onclick="window.location.href='/authorize-spotify'">
-        Authorize Spotify
+    <button
+      id="spotifyButton"
+      onclick="window.location.href='/authorize-spotify'"
+    >
+      Authorize Spotify
     </button>
-    <button id="twitchButton" onclick="window.location.href='/authorize-twitch'">
-        Authorize Twitch
+    <button
+      id="twitchButton"
+      onclick="window.location.href='/authorize-twitch'"
+    >
+      Authorize Twitch
     </button>
     <br />
     <input type="text" id="twitchChannel" placeholder="Enter Twitch Channel" />
@@ -86,50 +93,62 @@
     <button onclick="toggleBot()">Start Bot</button>
     <div id="botStatus"></div>
     <script>
-        fetch("/spotifyStatus.txt")
-            .then((response) => response.text())
-            .then((text) => {
-                if (text === "Spotify Authorized") {
-                    document.getElementById("spotifyButton").innerText = "Spotify Authorized";
-                }
-            });
+      fetch("/spotifyStatus.txt")
+        .then((response) => response.text())
+        .then((text) => {
+          if (text === "Spotify Authorized") {
+            document.getElementById("spotifyButton").innerText =
+              "Spotify Authorized";
+          }
+        });
 
-        fetch("/twitchStatus.txt")
-            .then((response) => response.text())
-            .then((text) => {
-                if (text === "Twitch Authorized") {
-                    document.getElementById("twitchButton").innerText = "Twitch Authorized";
-                }
-            });
+      fetch("/twitchStatus.txt")
+        .then((response) => response.text())
+        .then((text) => {
+          if (text === "Twitch Authorized") {
+            document.getElementById("twitchButton").innerText =
+              "Twitch Authorized";
+          }
+        });
 
-        fetch("/botStatus")
-            .then((response) => response.json())
-            .then((data) => {
-                document.getElementById("botStatus").innerText = data.message;
-                if (data.isRunning) {
-                    document.getElementById("botStatus").innerText = "Status: Bot is running";
-                } else {
-                    document.getElementById("botStatus").innerText = "Status: Bot is stopped";
-                }
-            });
+      fetch("/botStatus")
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById("botStatus").innerText = data.message;
+          if (data.isRunning) {
+            document.getElementById("botStatus").innerText =
+              "Status: Bot is running";
+            document.getElementById("twitchChannel").value = data.channel;
+            document.getElementById("twitchChannel").disabled = true;
+          } else {
+            document.getElementById("botStatus").innerText =
+              "Status: Bot is stopped";
+            document.getElementById("twitchChannel").disabled = false;
+          }
+        });
 
-        function toggleBot() {
-            const twitchChannel = document.getElementById("twitchChannel").value;
-            if (!twitchChannel) {
-                alert("Please enter a Twitch channel");
-                return;
-            }
-            fetch(`/toggle-bot?channel=${encodeURIComponent(twitchChannel)}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    document.getElementById("botStatus").innerText = data.message;
-                    if (data.isRunning) {
-                        document.getElementById("botStatus").innerText = "Stop Bot";
-                    } else {
-                        document.getElementById("botStatus").innerText = "Start Bot";
-                    }
-                });
+      function toggleBot() {
+        const twitchChannel = document.getElementById("twitchChannel").value;
+        if (!twitchChannel) {
+          alert("Please enter a Twitch channel");
+          return;
         }
+        fetch(`/toggle-bot?channel=${encodeURIComponent(twitchChannel)}`)
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("botStatus").innerText = data.message;
+            if (data.isRunning) {
+              document.getElementById("botStatus").innerText =
+                "Status: Bot is running";
+              document.getElementById("twitchChannel").value = data.channel;
+              document.getElementById("twitchChannel").disabled = true;
+            } else {
+              document.getElementById("botStatus").innerText =
+                "Status: Bot is stopped";
+              document.getElementById("twitchChannel").disabled = false;
+            }
+          });
+      }
     </script>
-</body>
+  </body>
 </html>
