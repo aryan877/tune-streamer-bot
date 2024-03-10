@@ -40,7 +40,7 @@ app.use(express.static("public"));
 app.get("/authorize-spotify", (req, res) => {
   res.redirect(
     `https://accounts.spotify.com/authorize?client_id=${SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(
-      "http://localhost/callback"
+      `${process.env.REDIRECT_URI}/callback`
     )}&scope=user-read-currently-playing`
   );
 });
@@ -48,7 +48,7 @@ app.get("/authorize-spotify", (req, res) => {
 app.get("/authorize-twitch", (req, res) => {
   res.redirect(
     `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${encodeURIComponent(
-      "http://localhost/callback-twitch"
+      `${process.env.REDIRECT_URI}/callback-twitch`
     )}&response_type=code&scope=chat:edit+chat:read`
   );
 });
@@ -60,7 +60,7 @@ app.get("/callback", async (req, res) => {
     new URLSearchParams({
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: "http://localhost/callback",
+      redirect_uri: `${process.env.REDIRECT_URI}/callback`,
     }),
     {
       headers: {
@@ -86,7 +86,7 @@ app.get("/callback-twitch", async (req, res) => {
   const code = req.query.code;
   const response = await axios.post(
     `https://id.twitch.tv/oauth2/token?client_id=${TWITCH_CLIENT_ID}&client_secret=${TWITCH_CLIENT_SECRET}&code=${code}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(
-      "http://localhost/callback-twitch"
+      `${process.env.REDIRECT_URI}/callback-twitch`
     )}`
   );
   twitchAccessToken = response.data.access_token;
@@ -226,7 +226,7 @@ app.get("/botStatus", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on ${process.env.REDIRECT_URI}:${port}`);
 });
 
 // Function to save tokens to file
