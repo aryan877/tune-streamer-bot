@@ -141,6 +141,7 @@ app.get("/toggle-bot", async (req, res) => {
       },
       channels: [twitchChannel],
     });
+
     await twitchClient.connect();
 
     botInterval = setInterval(async () => {
@@ -154,7 +155,7 @@ app.get("/toggle-bot", async (req, res) => {
             },
           }
         );
-        console.log("Spotify response:", response.status, response.data);
+        console.log("Spotify response:", response.status);
 
         if (response.status === 200) {
           const data = response.data;
@@ -225,14 +226,18 @@ app.get("/toggle-bot", async (req, res) => {
     }, 10000);
 
     isBotRunning = true;
-    res.json({ message: "Bot is running!", isRunning: true });
+    res.json({
+      message: "Bot is running!",
+      isRunning: true,
+      channel: twitchChannel,
+    });
   } else {
     if (twitchClient) {
       twitchClient.disconnect();
     }
     clearInterval(botInterval);
     isBotRunning = false;
-    res.json({ message: "Bot is stopped", isRunning: false });
+    res.json({ message: "Bot is stopped", isRunning: false, channel: "" });
   }
 });
 
