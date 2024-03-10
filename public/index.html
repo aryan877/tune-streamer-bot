@@ -87,18 +87,20 @@
     >
       Authorize Twitch
     </button>
+    <div id="spotifyStatus">Spotify: Not Authorized</div>
+    <div id="twitchStatus">Twitch: Not Authorized</div>
     <br />
     <input type="text" id="twitchChannel" placeholder="Enter Twitch Channel" />
     <br />
-    <button onclick="toggleBot()">Start Bot</button>
+    <button id="toggleBotButton" onclick="toggleBot()">Start Bot</button>
     <div id="botStatus"></div>
     <script>
       fetch("/spotifyStatus.txt")
         .then((response) => response.text())
         .then((text) => {
           if (text === "Spotify Authorized") {
-            document.getElementById("spotifyButton").innerText =
-              "Spotify Authorized";
+            document.getElementById("spotifyStatus").innerText =
+              "Spotify: Authorized";
           }
         });
 
@@ -106,8 +108,8 @@
         .then((response) => response.text())
         .then((text) => {
           if (text === "Twitch Authorized") {
-            document.getElementById("twitchButton").innerText =
-              "Twitch Authorized";
+            document.getElementById("twitchStatus").innerText =
+              "Twitch: Authorized";
           }
         });
 
@@ -120,10 +122,12 @@
               "Status: Bot is running";
             document.getElementById("twitchChannel").value = data.channel;
             document.getElementById("twitchChannel").disabled = true;
+            document.getElementById("toggleBotButton").innerText = "Stop Bot";
           } else {
             document.getElementById("botStatus").innerText =
               "Status: Bot is stopped";
             document.getElementById("twitchChannel").disabled = false;
+            document.getElementById("toggleBotButton").innerText = "Start Bot";
           }
         });
 
@@ -142,10 +146,13 @@
                 "Status: Bot is running";
               document.getElementById("twitchChannel").value = data.channel;
               document.getElementById("twitchChannel").disabled = true;
+              document.getElementById("toggleBotButton").innerText = "Stop Bot";
             } else {
               document.getElementById("botStatus").innerText =
                 "Status: Bot is stopped";
               document.getElementById("twitchChannel").disabled = false;
+              document.getElementById("toggleBotButton").innerText =
+                "Start Bot";
             }
           });
       }

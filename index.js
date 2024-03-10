@@ -245,6 +245,7 @@ app.get("/botStatus", (req, res) => {
   res.json({
     message: isBotRunning ? "Bot is running!" : "Bot is stopped",
     isRunning: isBotRunning,
+    channel: isBotRunning ? twitchClient.getChannels()[0] : ""
   });
 });
 
