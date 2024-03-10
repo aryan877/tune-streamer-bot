@@ -4,9 +4,27 @@ const axios = require("axios");
 const tmi = require("tmi.js");
 const fs = require("fs");
 const path = require("path");
+const cors = require("cors");
 
 const app = express();
 const port = 80;
+
+// Define allowed origins
+const allowedOrigins = ["http://localhost:80", process.env.REDIRECT_URI];
+
+// CORS middleware configuration
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
+// Use CORS middleware
+app.use(cors(corsOptions));
 
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
