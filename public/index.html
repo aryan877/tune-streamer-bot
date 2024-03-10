@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Spotify Twitch Bot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <button id="spotifyButton" onclick="window.location.href='/authorize-spotify'">Authorize Spotify</button>
+  <button id="twitchButton" onclick="window.location.href='/authorize-twitch'">Authorize Twitch</button>
+  <button onclick="window.location.href='/run-bot'">Run Bot</button>
+  <script>
+    fetch('/spotifyStatus.txt')
+      .then(response => response.text())
+      .then(text => {
+        if (text === 'Spotify Authorized') {
+          document.getElementById('spotifyButton').innerText = 'Spotify Authorized';
+        }
+      });
+
+    fetch('/twitchStatus.txt')
+      .then(response => response.text())
+      .then(text => {
+        if (text === 'Twitch Authorized') {
+          document.getElementById('twitchButton').innerText = 'Twitch Authorized';
+        }
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+.env
+public/spotifyStatus.txt
+public/twitchStatus.txt
+tokens.json
+node_modules
