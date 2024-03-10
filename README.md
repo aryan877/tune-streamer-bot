@@ -37,7 +37,7 @@ cd tune-streamer-bot
     
     `node index.js` 
     
-The bot will announce the current song playing on Spotify in the specified Twitch chat every 10 seconds.
+The bot will poll Spotify for the current song every 10 seconds but will only announce in the Twitch chat if the song has changed since the last announcement.
 
 ### Notes
 
