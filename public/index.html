@@ -74,27 +74,58 @@
     </style>
   </head>
   <body>
-    <h1>TGCAS Bot</h1>
-    <button
-      id="spotifyButton"
-      onclick="window.location.href='/authorize-spotify'"
-    >
-      Authorize Spotify
-    </button>
-    <button
-      id="twitchButton"
-      onclick="window.location.href='/authorize-twitch'"
-    >
-      Authorize Twitch
-    </button>
-    <div id="spotifyStatus">Spotify: Not Authorized</div>
-    <div id="twitchStatus">Twitch: Not Authorized</div>
-    <br />
-    <input type="text" id="twitchChannel" placeholder="Enter Twitch Channel" />
-    <br />
-    <button id="toggleBotButton" onclick="toggleBot()">Start Bot</button>
-    <div id="botStatus"></div>
+    <div id="passwordContainer">
+      <input type="password" id="passwordInput" placeholder="Enter Password" />
+      <button onclick="verifyPassword()">Verify Password</button>
+    </div>
+    <div id="mainContainer" style="display: none">
+      <h1>TGCAS Bot</h1>
+      <button
+        id="spotifyButton"
+        onclick="window.location.href='/authorize-spotify'"
+      >
+        Authorize Spotify
+      </button>
+      <button
+        id="twitchButton"
+        onclick="window.location.href='/authorize-twitch'"
+      >
+        Authorize Twitch
+      </button>
+      <div id="spotifyStatus">Spotify: Not Authorized</div>
+      <div id="twitchStatus">Twitch: Not Authorized</div>
+      <br />
+      <input
+        type="text"
+        id="twitchChannel"
+        placeholder="Enter Twitch Channel"
+      />
+      <br />
+      <button id="toggleBotButton" onclick="toggleBot()">Start Bot</button>
+      <div id="botStatus"></div>
+    </div>
     <script>
+      function verifyPassword() {
+        const password = document.getElementById("passwordInput").value;
+        fetch("/verify-password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ password }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              document.getElementById("passwordContainer").style.display =
+                "none";
+              document.getElementById("mainContainer").style.display = "block";
+            } else {
+              alert("Incorrect password");
+            }
+          });
+      }
+
       fetch("/spotifyStatus.txt")
         .then((response) => response.text())
         .then((text) => {

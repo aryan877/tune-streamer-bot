@@ -25,6 +25,7 @@ const corsOptions = {
 
 // Use CORS middleware
 app.use(cors(corsOptions));
+app.use(express.json());
 
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
@@ -115,6 +116,15 @@ app.get("/callback-twitch", async (req, res) => {
   );
   saveTokens();
   res.redirect("/");
+});
+
+app.post("/verify-password", (req, res) => {
+  const { password } = req.body;
+  if (password === process.env.BOT_PASSWORD) {
+    res.json({ success: true });
+  } else {
+    res.status(401).json({ success: false, message: "Incorrect password" });
+  }
 });
 
 app.get("/toggle-bot", async (req, res) => {
@@ -245,7 +255,7 @@ app.get("/botStatus", (req, res) => {
   res.json({
     message: isBotRunning ? "Bot is running!" : "Bot is stopped",
     isRunning: isBotRunning,
-    channel: isBotRunning ? twitchClient.getChannels()[0] : ""
+    channel: isBotRunning ? twitchClient.getChannels()[0] : "",
   });
 });
 
